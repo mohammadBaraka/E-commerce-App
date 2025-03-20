@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-color: #38ada9;
+  --hover-color: #45c5c1;
+}
+
+.theme {
+  transition: all ease-in 0.3s;
+}
+.light {
+  background-color: #333333;
+  color: #fff;
+}
+
+.dark {
+  background-color: #ffffff;
+  color: #333;
+}
+
+.marginGlobal {
+  margin-top: 6rem;
+}
