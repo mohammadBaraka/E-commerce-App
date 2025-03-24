@@ -8,6 +8,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import "dotenv/config";
+import { url, mongodbUri } from "./helpers/constant.js";
 
 //?=================MIDDLEWARE=================
 const app = express();
@@ -28,7 +29,7 @@ app.use(
 );
 app.options("*", cors());
 
-// app.use(morgan("tiny"));
+app.use(morgan("tiny"));
 app.use(cookieParser());
 app.use(errorHandling);
 
@@ -36,7 +37,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 app.use("/public/uploads", express.static(`${__dirname}/public/uploads`));
 //?=================ROUTES=================
-const apiUrl = process.env.API_URL;
+const apiUrl = url;
 import productRouter from "./routes/products.routes.js";
 import categoryRouter from "./routes/category.routes.js";
 import userRouter from "./routes/users.routes.js";
@@ -53,14 +54,13 @@ app.use(`${apiUrl}`, authRouter);
 const port = process.env.PORT || 5000;
 
 mongoose
-  .connect(`${process.env.MONGODB_URI}`)
+  .connect(`${mongodbUri}`)
   .then(() => {
     console.log("Connect To DB Success");
-
     app.listen(port, () => {
       console.log(`server is running on http://localhost:${port}`);
     });
   })
   .catch((err) => {
-    console.log(err.message);
+    console.log({ Errors: "New Error", err: err.message });
   });

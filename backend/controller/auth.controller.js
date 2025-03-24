@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { httpStatus } from "../helpers/httpStatus.js";
 import "dotenv/config";
+import { jwtSecret } from "../helpers/constant.js";
 
 export const register = async (req, res) => {
   const findUser = await User.findOne({ email: req.body.email });
@@ -64,10 +65,7 @@ export const login = async (req, res) => {
         status: httpStatus.FAIL,
         message: "Invalid email or password",
       });
-    const token = jwt.sign(
-      { _id: user._id, isAdmin: user.isAdmin },
-      process.env.JWT
-    );
+    const token = jwt.sign({ _id: user._id, isAdmin: user.isAdmin }, jwtSecret);
     res.cookie("access_token", token, {
       httpOnly: true,
       sameSite: "none",
