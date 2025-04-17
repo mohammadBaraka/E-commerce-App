@@ -3,18 +3,19 @@ import * as React from "react";
 import { XCircleIcon } from "@heroicons/react/24/solid";
 import { Button } from "@material-tailwind/react";
 import { useGetOrderQuery } from "lib/apis/orderSlice";
+import Loader from "components/Loader/Loader";
 export default function Orders() {
   const { data: orders, isLoading } = useGetOrderQuery(null);
-  console.log("🚀 ~ Orders ~ orders:", orders?.data);
-
-  const [productDeatails, setProductDetails] = React.useState(false);
+  console.log(orders);
+  const [productDetails, setProductDetails] = React.useState(false);
 
   return (
     <>
+      {isLoading && <Loader />}
       <div className="flex flex-col justify-center items-center">
         <div
           className={`w-[30%] h-[30%] bg-primary text-white fixed  ${
-            productDeatails ? "-mt-[0%]" : "-mt-[100%]"
+            productDetails ? "-mt-[0%]" : "-mt-[100%]"
           } transition-all  duration-1000 z-40`}
         >
           <h3>Inputs Details</h3>
@@ -45,24 +46,29 @@ export default function Orders() {
                   </div>
                 </div>
               </div>
-
               <table className="items-center bg-transparent w-full border-collapse text-2xl ">
                 <thead>
                   <tr>
-                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-lg uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-lg uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center">
                       ID
                     </th>
-                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-lg uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Brand
+                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-lg uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center">
+                      City
                     </th>
-                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-lg uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Name
+                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-lg uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center">
+                      Country
                     </th>
-                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-lg uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Price
+                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-lg uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center">
+                      Phone
                     </th>
-                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-lg uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Action
+                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-lg uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center">
+                      Address1
+                    </th>
+                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-lg uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center">
+                      Address2
+                    </th>
+                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-lg uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center">
+                      Total
                     </th>
                   </tr>
                 </thead>
@@ -70,38 +76,30 @@ export default function Orders() {
                 <tbody>
                   {orders?.data?.map((order, index) => {
                     return (
-                      <tr key={order?.id}>
-                        <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-lg whitespace-nowrap p-4 text-left text-blueGray-700">
+                      <tr key={order.id}>
+                        <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-lg whitespace-nowrap p-4 text-center text-blueGray-700">
                           {index + 1}
                         </th>
-                        <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-lg whitespace-nowrap p-4 text-left text-blueGray-700">
-                          {order?.user?.name ? (
-                            order.user.name
-                          ) : (
-                            <div>
-                              <p className="text-red-500">Not Found</p>
-                            </div>
-                          )}
-                        </th>
-                        <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-lg whitespace-nowrap p-4 text-left text-blueGray-700">
-                          {order?.country}
-                        </th>
-                        <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-lg whitespace-nowrap p-4 text-left text-blueGray-700">
-                          {order?.city}
+                        <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-lg whitespace-nowrap p-4 text-center text-blueGray-700">
+                          {order.city}
                         </th>
 
-                        <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-lg whitespace-nowrap p-4 text-left text-blueGray-700">
-                          {order?.phone}
+                        <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-lg whitespace-nowrap p-4 text-center text-blueGray-700">
+                          {order.country}
                         </th>
 
-                        <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-lg whitespace-nowrap p-4 text-left text-blueGray-700">
-                          {order?.shippingAddress1}
+                        <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-lg whitespace-nowrap p-4 text-center text-blueGray-700">
+                          {order.phone}
                         </th>
-                        <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-lg whitespace-nowrap p-4 text-left text-blueGray-700">
-                          {order?.shippingAddress2}
+
+                        <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-lg whitespace-nowrap p-4 text-center text-blueGray-700">
+                          {order.shippingAddress1}
                         </th>
-                        <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-lg whitespace-nowrap p-4 text-left text-blueGray-700">
-                          {order?.status}
+                        <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-lg whitespace-nowrap p-4 text-center text-blueGray-700">
+                          {order.shippingAddress2}
+                        </th>
+                        <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-lg whitespace-nowrap p-4 text-center text-blueGray-700">
+                          {order.totalPrice} $
                         </th>
                       </tr>
                     );

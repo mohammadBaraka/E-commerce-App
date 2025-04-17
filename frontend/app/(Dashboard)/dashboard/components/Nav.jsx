@@ -71,7 +71,7 @@ export default function Nav() {
           </div>
         </Link>
 
-        <Link
+        {/* <Link
           href="/dashboard/setting"
           className={` pl-3 py-2 text-xl font-bold rounded-l-xl ${
             path === "/dashboard/setting" && activeLink
@@ -82,7 +82,7 @@ export default function Nav() {
 
             <li className="hidden xl:flex pr-4">Settings</li>
           </div>
-        </Link>
+        </Link> */}
       </ul>
     </div>
   );

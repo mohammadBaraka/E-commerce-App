@@ -80,7 +80,7 @@ export default function AddCategory() {
       behavior: "smooth",
     });
   };
-  const hndleDelete = (id) => {
+  const handleDelete = (id) => {
     deleteCategory(id).then((res) => {
       if (res?.error?.status === 400)
         return msgError(res?.error?.data.message || "Something went wrong");
@@ -146,7 +146,7 @@ export default function AddCategory() {
       <CategoryTable
         categories={categories?.data}
         handleEdit={handleEdit}
-        hndleDelete={hndleDelete}
+        handleDelete={handleDelete}
         handleReset={handleReset}
       />
     </>

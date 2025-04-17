@@ -62,6 +62,10 @@ const CardSection = ({
                     className="font-normal opacity-75 my-6"
                   >
                     {product?.description.slice(0, 50)}
+                    <Link href={`/product/${product.id}`}>
+                      
+                      <span className="font-bold text-teal-300">Read More</span>
+                    </Link>
                   </Typography>
                 </CardBody>
                 <CardFooter className="pt-0 ">

@@ -4,7 +4,7 @@ import { Button } from "@material-tailwind/react";
 export default function CategoryTable({
   categories,
   handleEdit,
-  hndleDelete,
+  handleDelete,
   handleReset,
 }) {
   return (
@@ -87,7 +87,7 @@ export default function CategoryTable({
                               onClick={() =>
                                 msgConfirm(
                                   `You Want To Delete This ${category.name}`,
-                                  () => hndleDelete(category.id)
+                                  () => handleDelete(category.id)
                                 )
                               }
                             >
