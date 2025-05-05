@@ -18,7 +18,7 @@ export const stripePayment = async (req, res) => {
           currency: "usd",
           product_data: {
             name: item.name,
-            images: [item.image], // images يجب أن تكون مصفوفة وليست مفردة!
+            images: [item.image],
           },
           unit_amount: Math.round(item.price * 100),
         },

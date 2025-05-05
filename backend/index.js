@@ -21,7 +21,7 @@ app.use(
 const corsOrigin =
   process.env.NODE_ENV === "development"
     ? "http://localhost:3000"
-    : "https://e-commerce-3q198e77d-mohammadbarakas-projects.vercel.app";
+    : "https://e-commerce-app-six-delta.vercel.app";
 app.use(
   cors({
     origin: corsOrigin,
