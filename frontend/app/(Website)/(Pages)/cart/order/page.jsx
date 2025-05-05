@@ -1,36 +1,28 @@
 "use client";
 import styles from "../../register/Register.module.css";
-import { CheckBadgeIcon, CreditCardIcon } from "@heroicons/react/24/solid";
-import Link from "next/link";
+import { CreditCardIcon } from "@heroicons/react/24/solid";
 import * as React from "react";
-import StripeCheckout from "react-stripe-checkout";
 import { useCreateOrderMutation } from "lib/apis/orderSlice";
 import { useAppSelector, useAppDispatch } from "lib/hooks";
-import { msgSuccess, msgError } from "utils/handleMessage";
+import { msgError } from "utils/handleMessage";
 import Loader from "components/Loader/Loader";
 import { useGetTokenQuery } from "lib/apis/authSlice";
-import { clear } from "lib/slices/CartSlise";
-import { Button } from "@material-tailwind/react";
+import { mainUrl } from "utils/mainUrl";
 
-const KEY = process.env.NEXT_PUBLIC_REACT_APP_KEY;
 export default function Ordering() {
-  const dispatch = useAppDispatch();
   const { data: userData, isLoading: loadingData } = useGetTokenQuery();
 
-  const [createOrder, { data, isError, isLoading, isSuccess }] =
-    useCreateOrderMutation();
   const carts = useAppSelector((state) => state.cart);
+
   const totalPrice = carts.reduce((acc, product) => {
     acc += product.price * product.quantity;
     return acc;
   }, 0);
-  const orderItems = carts.map((item) => {
-    const order = {
-      quantity: item?.quantity,
-      product: item?.id,
-    };
-    return order;
-  });
+
+  const orderItems = carts.map((item) => ({
+    quantity: item?.quantity,
+    product: item?.id,
+  }));
 
   const [inputs, setInputs] = React.useState({
     orderItems,
@@ -50,23 +42,48 @@ export default function Ordering() {
       [e.target.name]: e.target.value,
     }));
   };
-  const handleSubmit = () => {
-    createOrder(inputs).then((res) => {
-      if (res?.error?.status === 500)
-        return msgError("All Failds Are Reauired");
-      dispatch(clear());
-      msgSuccess(res?.data?.message || "Ordering Created Success!");
-    });
+
+  const handlePayment = async () => {
+    if (
+      !inputs.shippingAddress1 ||
+      !inputs.city ||
+      !inputs.zip ||
+      !inputs.country ||
+      !inputs.phone
+    ) {
+      return msgError("All fields are required.");
+    }
+
+    try {
+      const res = await fetch(`${mainUrl}/checkout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ cart: carts, totalPrice }),
+      });
+
+      const data = await res.json();
+
+      if (data?.url) {
+        window.location.href = data.url;
+        localStorage.setItem("orderData", JSON.stringify(inputs));
+      } else {
+        msgError("Something went wrong during payment processing.");
+      }
+    } catch (err) {
+      msgError("Payment failed. Please try again.");
+    }
   };
 
   return (
     <>
-      {isLoading || loadingData ? <Loader /> : null}
-      {carts.length > 0 ? (
+      {loadingData ? <Loader /> : null}
+      {carts.length > 0 && (
         <section className="flex justify-center items-center p-4 min-h-screen marginGlobal">
           <form className={styles.form} onClick={(e) => e.preventDefault()}>
-            <p className={styles.title}>Ordering </p>
-            <p className={styles.message}>Cash On Deleviry</p>
+            <p className={styles.title}>Ordering</p>
+            <p className={styles.message}>Cash On Delivery</p>
             <div className={styles.flex}>
               <label>
                 <input
@@ -78,7 +95,6 @@ export default function Ordering() {
                 />
                 <span>Shipping Address 1</span>
               </label>
-
               <label>
                 <input
                   className={styles.input}
@@ -101,7 +117,6 @@ export default function Ordering() {
                 />
                 <span>City</span>
               </label>
-
               <label>
                 <input
                   className={styles.input}
@@ -113,7 +128,6 @@ export default function Ordering() {
                 <span>Zip Code</span>
               </label>
             </div>
-
             <div className={styles.flex}>
               <label>
                 <input
@@ -125,7 +139,6 @@ export default function Ordering() {
                 />
                 <span>Country</span>
               </label>
-
               <label>
                 <input
                   className={styles.input}
@@ -134,35 +147,18 @@ export default function Ordering() {
                   name="phone"
                   onChange={handleChange}
                 />
-                <span>phone</span>
+                <span>Phone</span>
               </label>
             </div>
 
-            <StripeCheckout
-              name="E-commerce"
-              image={"/logo.png"}
-              currncy="USD"
-              amount={totalPrice * 100}
-              stripeKey={KEY}
-              token={handleSubmit}
+            <button
+              onClick={handlePayment}
+              className={`${styles.submit} flex gap-2 items-center`}
             >
-              <button className={`${styles.submit} flex gap-2 items-center`}>
-                Pay Now <CreditCardIcon className="w-6 h-6" />
-              </button>
-            </StripeCheckout>
+              Pay Now <CreditCardIcon className="w-6 h-6" />
+            </button>
           </form>
         </section>
-      ) : (
-        <div className="flex flex-col justify-center items-center gap-2 marginGlobal p-5">
-          <CheckBadgeIcon className="w-28 h-w-28 text-primary" />
-          <div className="text-3xl font-bold text-gray-600">Thank you!</div>
-          <div className="font-bold text-xl text-green-500">
-            Pyment Has Been Success!
-          </div>
-          <Link href={"/product"}>
-            <Button variant="full">continue shopping</Button>
-          </Link>
-        </div>
       )}
     </>
   );

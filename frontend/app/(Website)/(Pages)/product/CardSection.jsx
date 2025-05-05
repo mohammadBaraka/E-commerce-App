@@ -21,7 +21,6 @@ const CardSection = ({
   loginPage,
 }) => {
   const { mode, toggle } = React.useContext(ThemeContext);
-  console.log(mode);
   return (
     <>
       {displayProducts?.data?.length > 0 ? (
@@ -63,7 +62,6 @@ const CardSection = ({
                   >
                     {product?.description.slice(0, 50)}
                     <Link href={`/product/${product.id}`}>
-                      
                       <span className="font-bold text-teal-300">Read More</span>
                     </Link>
                   </Typography>

@@ -1,5 +1,6 @@
 "use client";
 import About from "components/About/About";
+import Categories from "components/Categories/Categories";
 import Footer from "components/Footer/Footer";
 import Landing from "components/Landing/Landing";
 import Services from "components/Services/Services";
@@ -11,6 +12,7 @@ export default function Home() {
   return (
     <div>
       <Landing />
+      <Categories />
       <About />
       <Services />
       <Footer />

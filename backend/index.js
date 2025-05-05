@@ -45,13 +45,13 @@ import categoryRouter from "./routes/category.routes.js";
 import userRouter from "./routes/users.routes.js";
 import authRouter from "./routes/auth.routes.js";
 import orderRouter from "./routes/order.routes.js";
-
+import paymentRouter from "./routes/payment.routes.js";
 app.use(`${apiUrl}/product`, productRouter);
 app.use(`${apiUrl}/category`, categoryRouter);
 app.use(`${apiUrl}/users`, userRouter);
 app.use(`${apiUrl}/order`, orderRouter);
 app.use(`${apiUrl}`, authRouter);
-
+app.use(`${apiUrl}/checkout`, paymentRouter);
 //?=================CONNECT TO DB AND RUN THE APP=================
 const port = process.env.PORT || 5000;
 

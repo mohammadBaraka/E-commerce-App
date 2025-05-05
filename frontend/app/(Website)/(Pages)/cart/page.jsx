@@ -1,11 +1,12 @@
 "use client";
 import { useAppDispatch, useAppSelector } from "lib/hooks";
-import { cartSlice, clear, deleteFromCart } from "lib/slices/CartSlise";
+import { clear, deleteFromCart } from "lib/slices/CartSlise";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { msgConfirm } from "utils/handleMessage";
 import { Button } from "@material-tailwind/react";
 import Link from "next/link";
 import Image from "next/image";
+import { loadStripe } from "@stripe/stripe-js";
 
 export default function Cart() {
   const carts = useAppSelector((state) => state.cart);
@@ -19,7 +20,9 @@ export default function Cart() {
   const clearAll = () => {
     dispatch(clear());
   };
-
+  const makePayment = async () => {
+    const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY);
+  };
   return (
     <div>
       <section className="">
