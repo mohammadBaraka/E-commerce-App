@@ -16,6 +16,7 @@
     "@stripe/stripe-js": "^2.4.0",
     "axios": "^1.6.2",
     "dotenv": "^16.4.1",
+    "framer-motion": "^12.12.2",
     "keen-slider": "^6.8.6",
     "next": "^14.2.25",
     "react": "^18",

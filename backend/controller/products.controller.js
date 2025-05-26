@@ -6,13 +6,32 @@ import cloudinary from "../helpers/cloudinay.js";
 //?=================GET ALL PRODUCTS ======================
 export const getProducts = async (req, res) => {
   let categories = {};
+  let priceFilter = {};
+  let filters = {};
   let count = 0;
+
+  // Category filtering
   if (req.query.categories) {
     categories = { category: req.query.categories.split(",") };
-    count = await Product.countDocuments(categories);
-  } else {
-    count = await Product.countDocuments();
   }
+
+  // Price filtering
+  if (req.query.minPrice || req.query.maxPrice) {
+    priceFilter.price = {};
+    if (req.query.minPrice) {
+      priceFilter.price.$gte = Number(req.query.minPrice);
+    }
+    if (req.query.maxPrice) {
+      priceFilter.price.$lte = Number(req.query.maxPrice);
+    }
+  }
+
+  // Combine filters
+  filters = { ...categories, ...priceFilter };
+
+  // Count documents with filters
+  count = await Product.countDocuments(filters);
+
   //?===========Paginate==============
   const query = req.query;
   const limit = query.limit || 10;
@@ -21,15 +40,16 @@ export const getProducts = async (req, res) => {
   const total = Math.ceil(count / limit);
 
   try {
-    const product = await Product.find(categories)
+    const product = await Product.find(filters)
       .sort({ _id: -1 })
       .populate("category")
       .limit(limit)
       .skip(skip);
+
     if (!product) {
       res
         .status(httpStatus.codeNotFound)
-        .json({ message: "Categories not found" });
+        .json({ message: "Products not found" });
     }
 
     const response = {
@@ -46,7 +66,6 @@ export const getProducts = async (req, res) => {
     });
   }
 };
-
 export const searchOnProducts = async (req, res) => {
   //?===========Paginate==============
   const query = req.query;

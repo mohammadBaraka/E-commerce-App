@@ -17,14 +17,14 @@ export default function NavList() {
         </ListItem>
       </Link>
 
-      <Link href="/">
+      <Link href="#about">
         <ListItem className="flex items-center gap-2 py-2 pr-4 font-medium">
           About Us
         </ListItem>
       </Link>
-      <Link href="/">
+      <Link href="#services">
         <ListItem className="flex items-center gap-2 py-2 pr-4 font-medium">
-          Servises
+          Services
         </ListItem>
       </Link>
 

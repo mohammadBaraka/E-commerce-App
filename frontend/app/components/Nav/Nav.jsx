@@ -60,7 +60,7 @@ export default function Nav() {
                 {data?.user && isSuccess && (
                   <Link href="/dashboard">
                     <Button variant="outlined" size="md" color="teal" fullWidth>
-                      Dashboadrd
+                      Dashboard
                     </Button>
                   </Link>
                 )}

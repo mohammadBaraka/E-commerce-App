@@ -19,7 +19,9 @@
   background-color: #ffffff;
   color: #333;
 }
-
+html {
+  scroll-behavior: smooth;
+}
 .marginGlobal {
   margin-top: 6rem;
 }

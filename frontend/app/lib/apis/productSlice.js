@@ -8,19 +8,29 @@ export const productSlice = createApi({
   tagTypes: ["products"],
   endpoints: (builder) => ({
     getProduct: builder.query({
-      query: ({ limit, page, categories }) => ({
-        url: `product?limit=${limit}&page=${page}&&categories=${
-          categories ? categories : ""
-        }`,
-        method: "GET",
-      }),
+      query: ({ limit, page, categories, minPrice, maxPrice }) => {
+        let url = `product?limit=${limit}&page=${page}`;
+        if (categories) url += `&categories=${categories}`;
+        if (minPrice) url += `&minPrice=${minPrice}`;
+        if (maxPrice) url += `&maxPrice=${maxPrice}`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
       providesTags: ["products"],
     }),
     getProductByCategory: builder.mutation({
-      query: ({ limit, page, categories }) => ({
-        url: `product?limit=${limit}&page=${page}&categories=${categories}`,
-        method: "GET",
-      }),
+      query: ({ limit, page, categories, minPrice, maxPrice }) => {
+        let url = `product?limit=${limit}&page=${page}`;
+        if (categories) url += `&categories=${categories}`;
+        if (minPrice) url += `&minPrice=${minPrice}`;
+        if (maxPrice) url += `&maxPrice=${maxPrice}`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
       invalidatesTags: ["products"],
     }),
 

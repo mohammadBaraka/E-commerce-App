@@ -1,24 +1,61 @@
+"use client";
 import Link from "next/link";
 import { dataSction } from "./dataSection";
+import { motion } from "framer-motion";
+import ScrollAnimation from "components/ScrollAnimation/ScrollAnimation";
 
 export default function About() {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  };
+
   return (
-    <>
-      <div className="mx-auto xl:w-[90%] px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16 marginGlobal">
-        <div className="mx-auto max-w-lg text-center">
+    <ScrollAnimation>
+      <div
+        id="about"
+        className="mx-auto xl:w-[90%] px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16 marginGlobal"
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="mx-auto max-w-lg text-center"
+        >
           <h2 className="text-3xl font-bold sm:text-4xl">About Our Site</h2>
           <p className="mt-4">
             Lorem ipsum, dolor sit amet consectetur adipisicing elit.
             Consequuntur aliquam doloribus nesciunt eos fugiat. Vitae aperiam
             fugit consequuntur saepe laborum.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
+        >
           {dataSction?.map((item) => {
             return (
-              <span
+              <motion.span
                 key={item.id}
+                variants={itemVariants}
+                whileHover={{
+                  scale: 1.03,
+                  boxShadow:
+                    "0 10px 25px -5px rgba(0, 128, 128, 0.1), 0 10px 10px -5px rgba(0, 128, 128, 0.04)",
+                }}
                 className="block rounded-xl border border-gray-800 p-8 shadow-xl transition hover:border-teal-500/10 hover:shadow-teal-500/10"
               >
                 {item.icon}
@@ -32,11 +69,11 @@ export default function About() {
                     Get Started Today
                   </Link>
                 </div>
-              </span>
+              </motion.span>
             );
           })}
-        </div>
+        </motion.div>
       </div>
-    </>
+    </ScrollAnimation>
   );
 }

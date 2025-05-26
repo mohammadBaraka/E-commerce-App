@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import Loader from "components/Loader/Loader";
 import { msgError, msgSuccess } from "utils/handleMessage";
 import { useLoginMutation } from "lib/apis/authSlice";
+import ScrollAnimation from "components/ScrollAnimation/ScrollAnimation";
 export default function Register() {
   const router = useRouter();
   const [inputs, setInputs] = React.useState({
@@ -36,50 +37,52 @@ export default function Register() {
 
   return (
     <>
-      {/* Validatin For Login Mutation  */}
+      {/* Validation For Login Mutation  */}
       {isLoading && <Loader />}
-      <section
-        className="flex justify-center items-center m-auto w-[100%] px-4 marginGlobal
+      <ScrollAnimation>
+        <section
+          className="flex justify-center items-center m-auto w-[100%] px-4 marginGlobal
        xl:grid xl:grid-cols-2 xl:w-[90%] min-h-screen"
-      >
-        <form className={`${styles.form} w-[100%]`} onSubmit={handleSubmit}>
-          <p className={styles.title}>Login </p>
-          <p className={styles.message}>
-            Signin now and get full access to our app.
-          </p>
+        >
+          <form className={`${styles.form} w-[100%]`} onSubmit={handleSubmit}>
+            <p className={styles.title}>Login </p>
+            <p className={styles.message}>
+              Signin now and get full access to our app.
+            </p>
 
-          <label>
-            <input
-              className={styles.input}
-              type="email"
-              placeholder=""
-              name="email"
-              onChange={handleChange}
-            />
-            <span>Email</span>
-          </label>
+            <label>
+              <input
+                className={styles.input}
+                type="email"
+                placeholder=""
+                name="email"
+                onChange={handleChange}
+              />
+              <span>Email</span>
+            </label>
 
-          <label>
-            <input
-              className={styles.input}
-              type="password"
-              placeholder=""
-              name="password"
-              onChange={handleChange}
-            />
-            <span>Password</span>
-          </label>
+            <label>
+              <input
+                className={styles.input}
+                type="password"
+                placeholder=""
+                name="password"
+                onChange={handleChange}
+              />
+              <span>Password</span>
+            </label>
 
-          <button className={styles.submit}>Submit</button>
+            <button className={styles.submit}>Submit</button>
 
-          <p className={styles.signin}>
-            Already have an acount ? <Link href="/register">Signin</Link>{" "}
-          </p>
-        </form>
-        <div className="hidden xl:flex">
-          <Image src={"/login.svg"} alt="signup" width={800} height={800} />
-        </div>
-      </section>
+            <p className={styles.signin}>
+              Already have an account ? <Link href="/register">Signin</Link>{" "}
+            </p>
+          </form>
+          <div className="hidden xl:flex">
+            <Image src={"/login.svg"} alt="signup" width={800} height={800} />
+          </div>
+        </section>
+      </ScrollAnimation>
     </>
   );
 }
